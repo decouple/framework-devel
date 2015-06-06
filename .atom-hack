@@ -1,9 +1,0 @@
-{
-  "type": "remote",
-  "host": "10.0.0.2",
-  "username": "vagrant",
-  "port": 22,
-  "privateKey": "E:\Projects\decouple\.vagrant\machines\default\virtualbox\private_key",
-  "remoteDir": "/var/www",
-  "autoPush": false
-}
