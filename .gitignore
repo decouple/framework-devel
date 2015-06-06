@@ -1,2 +1,5 @@
 puphpet/
 Vagrantfile
+.idea/
+.vagrant/
+.atom-hack
