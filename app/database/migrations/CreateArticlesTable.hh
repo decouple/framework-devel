@@ -6,19 +6,19 @@ use Decouple\DBAL\Schema\SchemaInterface;
 // Run the create articles table migration
 class CreateArticlesTable extends AbstractMigration {
   protected string $name = 'articles';
-  public function up(TableStructureInterface $table) : void
+  public function up() : void
   {
-    $table->increments('id');
-    $table->string('title', 55)->unique();
-    $table->text('content');
-    $table->string('image', 255);
-    $table->integer('author_id')->unsigned();
-    $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
-    $table->timestamps();
-    $table->softDeletes();
+    $this->table->increments('id');
+    $this->table->string('title', 55)->unique();
+    $this->table->text('content');
+    $this->table->string('image', 255);
+    $this->table->integer('author_id')->unsigned();
+    $this->table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
+    $this->table->timestamps();
+    $this->table->softDeletes();
   }
-  public function down(TableStructureInterface $table) : void
+  public function down() : void
   {
-    $table->drop();
+    $this->schema->table($this->name)->drop();
   }
 }

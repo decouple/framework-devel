@@ -1,5 +1,5 @@
 <?hh // strict
-final class :ui:button extends :ui:base {
+final class :decouple:ui:button extends :decouple:ui:base {
   attribute
     :button,
     enum {'small', 'large'} size = 'small',

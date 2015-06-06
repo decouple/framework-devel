@@ -8,7 +8,7 @@ class MySQLTableCreate extends MySQLTableStructure implements TableCreateInterfa
     parent::__construct($table->getName());
   }
 
-  public function execute($alter=false): bool {
+  public function execute(bool $alter=false): bool {
     $definition = "";
     $fields = [];
     $after = [];
@@ -17,7 +17,7 @@ class MySQLTableCreate extends MySQLTableStructure implements TableCreateInterfa
       $type = $column->getType();
       $definitions[] = $this->columnDefinition($column, $alter);
       $tmp = $this->columnAfter($column);
-      if(!empty($tmp)) {
+      if(!is_null($tmp)) {
         $after[] = $tmp;
       }
     }

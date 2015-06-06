@@ -12,11 +12,11 @@ class MySQLTableAlter extends MySQLTableStructure implements TableAlterInterface
     $this->changed = Vector {};
   }
 
-  public function dropColumn(TableColumnInterface $column) {
+  public function dropColumn(TableColumnInterface $column) : void {
     $this->dropped->add($column->getName());
   }
 
-  public function alterColumn(TableColumnInterface $column) {
+  public function alterColumn(TableColumnInterface $column) : void {
     $this->changed->add($column);
   }
 

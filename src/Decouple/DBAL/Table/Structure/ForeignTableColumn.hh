@@ -1,13 +1,13 @@
 <?hh // strict
 namespace Decouple\DBAL\Table\Structure;
 use Decouple\Common\AbstractAttributeContainer;
-class ForeignTableColumn extends AbstractAttributeContainer implements TableColumnInterface {
+class ForeignTableColumn extends TableColumn {
   private string $references = '';
   private string $on = '';
   private string $onDelete = '';
   private string $type = 'foreign';
   public function __construct(private string $name) {
-    parent::__construct(Map{});
+    parent::__construct($name);
   }
   public function references(string $field) : ForeignTableColumn {
     $this->setAttribute('references', $field);
@@ -23,7 +23,7 @@ class ForeignTableColumn extends AbstractAttributeContainer implements TableColu
   public function getType() : string {
     return $this->type;
   }
-  public function onDelete(string $do) {
+  public function onDelete(string $do) : void {
     $this->setAttribute('ondelete', $do);
   }
 }

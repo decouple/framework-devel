@@ -1,15 +1,15 @@
-<?hh // partial 
-namespace Test\Http;
+<?hh // partial
+namespace Test\HTTP;
 use Decouple\Test\TestCase;
 use Decouple\HTTP\Request\Request;
 use Decouple\HTTP\Request\Uri;
 use Decouple\HTTP\Router\Route\FunctionRoute;
-use Test\Http\Fixture\RouteDependency;
+use Test\HTTP\Fixture\RouteDependency;
 use Decouple\Decoupler\Decoupler;
 class RouteTest extends TestCase {
   public function execute() : void {
     $dependencies = Map {
-      "Test\Http\Fixture\RouteDependency" => new RouteDependency() 
+      "Test\Http\Fixture\RouteDependency" => new RouteDependency()
     };
 
     $uri = new Uri('foo/bar');

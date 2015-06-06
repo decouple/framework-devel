@@ -1,4 +1,4 @@
-<?hh // strict
+<?hh // decl
 return Vector {
   "Decouple\Test\TestCommand",
   "Decouple\DBAL_CLI\Command\MigrateUpCommand",

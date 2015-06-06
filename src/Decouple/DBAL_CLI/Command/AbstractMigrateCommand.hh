@@ -5,6 +5,8 @@ use Decouple\CLI\Command\AbstractCommand;
 use Decouple\Registry\Paths;
 use Decouple\Decoupler\Decoupler;
 use Decouple\DBAL\Schema\SchemaInterface;
+use Decouple\DBAL\Table\Structure\TableStructure;
+use Decouple\DBAL\Table\Create\TableCreateInterface;
 use Decouple\DBAL\Table\TableInterface;
 use Decouple\DBAL_CLI\MigrationInterface;
 abstract class AbstractMigrateCommand extends AbstractCommand {
@@ -43,7 +45,7 @@ abstract class AbstractMigrateCommand extends AbstractCommand {
 
   protected function saveMigration(
     MigrationInterface $migration
-  ) {
+  ) : void {
     $this->schema->table('migration')->insert(Map {
       "table" => $migration->getName(),
       "data" => $migration->toString()

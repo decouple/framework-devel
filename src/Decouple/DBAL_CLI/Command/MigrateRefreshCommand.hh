@@ -15,9 +15,9 @@ class MigrateRefreshCommand extends AbstractMigrateCommand {
         $obj = $this->decoupler->injectInstance($migration);
         if ($obj instanceof MigrationInterface) {
           Console::output("\tDown...");
-          $obj->down($this->schema);
+          $obj->down();
           Console::output("\tUp...");
-          $obj->up($this->schema);
+          $obj->up();
           $this->saveMigration($obj);
         }
       }

@@ -4,5 +4,5 @@ use Decouple\DBAL\Table\Structure\TableColumn;
 use Decouple\DBAL\Table\Structure\ForeignTableColumn;
 use Decouple\DBAL\Table\Structure\TableStructureInterface;
 interface TableCreateInterface extends TableStructureInterface {
-  public function execute($alter=false) : bool;
+  public function execute(bool $alter=false) : bool;
 }

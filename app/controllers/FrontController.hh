@@ -49,10 +49,10 @@ class FrontController {
       foreach ($articles as $article) {
         $body =
           <news:article
-            title={$article['title']}
-            content={$article['content']}
-            date={$article['created_at']}
-            image={$article['image']}
+            title={(string)$article['title']}
+            content={(string)$article['content']}
+            date={(string)$article['created_at']}
+            image={(string)$article['image']}
           />;
         $container->appendChild($body);
       }

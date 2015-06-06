@@ -13,8 +13,8 @@ abstract class AbstractTableStructure implements TableStructureInterface {
     $this->columns[$name] = $column;
     return $column;
   }
-  public function increments(string $name='id') : TableColumn {
-    $column = new TableColumn($name, 'integer', Map {'length' => 14, 'auto_increment' => true});
+  public function increments(string $name='id', int $length=14) : TableColumn {
+    $column = new TableColumn($name, 'integer', Map {'length' => $length, 'auto_increment' => true});
     $this->columns[$name] = $column;
     return $column;
   }
@@ -46,6 +46,10 @@ abstract class AbstractTableStructure implements TableStructureInterface {
     $this->columns[$name] = $column;
     return $column;
   }
+  public function timestamp(string $name, bool $value=true) : void {
+    $created_at = new TableColumn($name, 'timestamp');
+    $this->columns[$name] = $created_at;
+  }
   public function softDeletes(bool $value=true) : void {
     $deleted_at = new TableColumn('deleted_at', 'timestamp');
     $this->columns['deleted_at'] = $deleted_at;
@@ -56,7 +60,7 @@ abstract class AbstractTableStructure implements TableStructureInterface {
     $updated_at = new TableColumn('updated_at', 'timestamp');
     $this->columns['updated_at'] = $updated_at;
   }
-  public function addColumn(TableColumnInterface $column) {
+  public function addColumn(TableColumnInterface $column) : void {
       $this->columns->set($column->getName(), $column);
   }
   public function getColumn(string $name) : ?TableColumnInterface {

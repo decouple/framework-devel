@@ -10,6 +10,7 @@ interface TableStructureInterface {
   public function foreign(string $name) : ForeignTableColumn;
   public function softDeletes(bool $value=true) : void;
   public function timestamps(bool $value=true) : void;
+  public function timestamp(string $name, bool $value=true) : void;
   public function addColumn(TableColumnInterface $column) : void;
   public function getColumn(string $name) : ?TableColumnInterface;
   public function getColumns() : Map<string,TableColumnInterface>;

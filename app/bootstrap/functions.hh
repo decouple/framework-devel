@@ -1,4 +1,4 @@
-<?hh // strict
+<?hh // decl
 function hack_require(string $filename) : mixed {
   if(file_exists($filename)) {
     return require $filename;
@@ -32,10 +32,10 @@ function app_exception_handler(Exception $e) : void {
   $trace = $e->getTrace();
   foreach($trace as $p) {
     try {
-      $file = isset($p['file']) ? $p['file'] : 'N/A';
-      $args = isset($p['args']) ? implode(',', (string)$p['args']) : 'N/A';
-      $func = isset($p['class']) ? sprintf('%s->%s', $p['class'], $p['function']) : (isset($p['function']) ? $p['function'] : 'N/A');
-      $line = isset($p['line']) ? $p['line'] : 'N/A';
+      $file = !is_null($p['file']) ? $p['file'] : 'N/A';
+      $args = !is_null($p['args']) ? implode(',', (string)$p['args']) : 'N/A';
+      $func = !is_null($p['class']) ? sprintf('%s->%s', $p['class'], $p['function']) : (!is_null($p['function']) ? $p['function'] : 'N/A');
+      $line = !is_null($p['line']) ? $p['line'] : 'N/A';
       $error =
       <tr>
         <td>{$file}</td>
@@ -56,8 +56,10 @@ function app_exception_handler(Exception $e) : void {
 function perf_info(DebugRegistry $debug): :xhp {
   $start = $debug->get('start_time');
   $end = getrusage();
-  $comptime = rutime($end, $start, "utime")/100;
-  $calltime = rutime($end, $start, "stime");
+  if($start instanceof KeyedContainer) {
+    $comptime = rutime($end, $start, "utime")/100;
+    $calltime = rutime($end, $start, "stime");
+  }
   return
     <div>
       <p class="ui segment">
@@ -69,7 +71,7 @@ function perf_info(DebugRegistry $debug): :xhp {
     </div>;
 }
 
-function rutime($ru, $rus, $index) {
+function rutime(KeyedContainer<string,float> $ru, KeyedContainer<string,float> $rus, string $index) : float {
   return
     ($ru["ru_$index.tv_sec"] * 1000 +
      intval($ru["ru_$index.tv_usec"] / 1000)) -
