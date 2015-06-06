@@ -4,6 +4,8 @@ use Decouple\Registry\Registry;
 use Decouple\Decoupler\Decoupler;
 use Decouple\DBAL\DPDO\DPDOMySQLDriver;
 
+require_once "functions.hh";
+
 // Error handling
 set_exception_handler('app_exception_handler');
 set_error_handler('app_error_handler', E_ERROR);
@@ -34,25 +36,10 @@ $driver->connect(Map {
   'type' => 'mysql',
   'host' => 'localhost',
 }, 'decouple', 'secret');
+$schema = $driver->schema('decouple');
 $decoupler = new Decoupler(Map {
   "Decouple\Registry\Paths" => $paths,
   "DebugRegistry" => new DebugRegistry(Map {"start_time" => time()}),
-  "Decouple\DBAL\Driver\DriverInterface" => $driver
+  "Decouple\DBAL\Driver\DriverInterface" => $driver,
+  "Decouple\DBAL\Schema\SchemaInterface" => $schema
 });
-
-/** Service functions **/
-function hack_require(string $filename) : mixed {
-  if(file_exists($filename)) {
-    return require $filename;
-  } else {
-    throw new Exception(sprintf("Invalid filename: %s", $filename));
-  }
-}
-
-function app_error_handler(int $errno, string $errstr, string $errfile, int $errline, KeyedTraversable<mixed,mixed> $errcontext) : void {
-  echo sprintf("[ERROR#%s] %s on line %s of %s\n", $errno, $errstr, $errline, $errfile);
-}
-
-function app_exception_handler(Exception $e) : void {
-  echo sprintf("[EXCEPTION] %s", $e->getMessage());
-}
