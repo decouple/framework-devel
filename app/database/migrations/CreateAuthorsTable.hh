@@ -1,8 +1,5 @@
 <?hh // partial
 use Decouple\DBAL_CLI\AbstractMigration;
-use Decouple\DBAL\Table\TableStructureInterface;
-use Decouple\DBAL\Table\Create\TableCreateInterface;
-use Decouple\DBAL\Schema\SchemaInterface;
 // Run the create articles table migration
 class CreateAuthorsTable extends AbstractMigration {
   protected string $name = 'authors';

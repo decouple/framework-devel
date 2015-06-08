@@ -34,7 +34,7 @@ class InjectionTest extends TestCase {
     $decoupler = new Decoupler(Map::fromArray([
       'Test\Decoupler\Fixture\MethodDependency' => new MethodDependency(42)
     ]));
-    // Get the private int 
+    // Get the private int
     $result = $decoupler->injectMethod($mock, 'getNumber');
     // Expect 42
     $this->assertEquals($result, 42);
@@ -84,6 +84,7 @@ class InjectionTest extends TestCase {
     if ($mock instanceof MockInstance) {
       // Make sure our property was injected
       $property = $mock->property;
+      var_dump($property);
       $this->assertEquals(($property instanceof PropertyDependency), true);
       if($property instanceof PropertyDependency) {
         // Make sure our property value is accessible

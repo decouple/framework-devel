@@ -4,36 +4,35 @@ use Decouple\CLI\Console;
 use Decouple\CLI\Command\AbstractCommand;
 use Decouple\Registry\Paths;
 use Decouple\Decoupler\Decoupler;
-use Decouple\DBAL\Schema\SchemaInterface;
-use Decouple\DBAL\Table\Structure\TableStructure;
-use Decouple\DBAL\Table\Create\TableCreateInterface;
-use Decouple\DBAL\Table\TableInterface;
-use Decouple\DBAL_CLI\MigrationInterface;
+use Decouple\Common\Contract\DB\Table;
+use Decouple\Common\Contract\DB\Schema;
+use Decouple\Common\Contract\DB\TableStructure;
 abstract class AbstractMigrateCommand extends AbstractCommand {
-  protected TableInterface $table;
+  protected Table $table;
   public function __construct(
     protected Paths $paths,
     protected Decoupler $decoupler,
-    protected SchemaInterface $schema,
+    protected Schema $schema,
   ) {
     $this->table = $schema->table('migrations');
-    if(!$this->table->exists()) {
-      $this->table->create(function (TableCreateInterface $create) {
-        $create->increments('id');
-        $create->string('table');
-        $create->text('data');
-        $create->timestamp('date');
-      });
+    if (!$this->table->exists()) {
+      $this->table->create(
+        function (TableStructure $create) {
+          $create->increments('id');
+          $create->string('migration');
+          $create->timestamp('date');
+        },
+      );
     }
   }
 
-  protected function getMigrations(): mixed {
+  protected function loadMigrations(): mixed {
     return hack_require(
       sprintf("%s/cli/migrations.hh", $this->paths->get('config')),
     );
   }
 
-  protected function getMigration(string $migration): mixed {
+  protected function loadMigration(string $migration): mixed {
     hack_require(
       sprintf(
         "%s/database/migrations/%s.hh",
@@ -43,12 +42,25 @@ abstract class AbstractMigrateCommand extends AbstractCommand {
     );
   }
 
-  protected function saveMigration(
-    MigrationInterface $migration
-  ) : void {
-    $this->schema->table('migration')->insert(Map {
-      "table" => $migration->getName(),
-      "data" => $migration->toString()
-    });
+  protected function selectMigration(string $migration): ?Map<string,mixed> {
+    return $this->schema
+      ->table('migrations')
+      ->select()
+      ->where('migration', '=', $migration)
+      ->first();
+  }
+
+  protected function resetMigration(string $migration) : void {
+    $this->schema
+      ->table('migrations')
+      ->delete()
+      ->where('migration', '=', $migration)
+      ->execute();
+  }
+
+  protected function saveMigration(string $migration): void {
+    $this->schema
+      ->table('migrations')
+      ->insert(Map {"migration" => $migration});
   }
 }

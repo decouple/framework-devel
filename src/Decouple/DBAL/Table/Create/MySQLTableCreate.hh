@@ -3,6 +3,7 @@ namespace Decouple\DBAL\Table\Create;
 use Decouple\DBAL\Table\MySQLTable;
 use Decouple\DBAL\Table\Structure\MySQLTableStructure;
 use Decouple\DBAL\Table\Structure\TableColumnInterface;
+use Decouple\DBAL\Contract\TableCreateInterface;
 class MySQLTableCreate extends MySQLTableStructure implements TableCreateInterface {
   public function __construct(protected MySQLTable $table) {
     parent::__construct($table->getName());

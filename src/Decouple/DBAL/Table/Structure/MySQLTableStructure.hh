@@ -1,14 +1,16 @@
 <?hh // strict
 namespace Decouple\DBAL\Table\Structure;
+use Decouple\Common\Contract\DB\TableColumn as TableColumnContract;
+use Decouple\Common\Contract\DB\TableStructure as TableStructureContract;
 class MySQLTableStructure extends AbstractTableStructure
-  implements TableStructureInterface {
-  protected Map<string, TableColumnInterface> $columns;
+  implements TableStructureContract {
+  protected Map<string, TableColumnContract> $columns;
   public function __construct(string $name) {
     $this->columns = Map {};
     parent::__construct($name);
   }
   public function columnDefinition(
-    TableColumnInterface $column,
+    TableColumnContract $column,
     bool $alter = false,
   ): string {
     $ctype = "VARCHAR(255)";
@@ -77,8 +79,8 @@ class MySQLTableStructure extends AbstractTableStructure
     return $definition;
   }
 
-  public function columnAfter(TableColumnInterface $column): string {
-    $result = "";
+  public function columnAfter(TableColumnContract $column): ?string {
+    $result = null;
     $type = $column->getType();
     if ($type == "integer") {
       if ($column->getAttribute('auto_increment')) {

@@ -1,8 +1,8 @@
 <?hh // strict
 namespace Decouple\DBAL\DPDO;
-use Decouple\DBAL\Statement\StatementInterface;
+use Decouple\Common\Contract\DB\Statement;
 use PDOStatement;
-class DPDOStatement extends PDOStatement implements StatementInterface {
+class DPDOStatement extends PDOStatement implements Statement {
   public function fetchColumn(int $columnIndex = 0) : mixed
   {
     return parent::fetchColumn($columnIndex);

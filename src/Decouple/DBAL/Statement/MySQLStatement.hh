@@ -1,5 +1,5 @@
 <?hh // strict
-use Decouple\DBAL\Statement\StatementInterface;
-interface MySQLStatement extends StatementInterface {
+use Decouple\Common\Contract\DB\Statement;
+interface MySQLStatement extends Statement {
   public function fetchColumn(int $column=0) : mixed;
 }

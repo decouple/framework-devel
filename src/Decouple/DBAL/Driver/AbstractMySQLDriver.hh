@@ -1,19 +1,21 @@
 <?hh // strict
 namespace Decouple\DBAL\Driver;
 use Decouple\DBAL\Schema\MySQLSchema;
-use Decouple\DBAL\Statement\StatementInterface;
-abstract class AbstractMySQLDriver implements DriverInterface {
+use Decouple\Common\Contract\DB\Driver;
+use Decouple\Common\Contract\DB\Statement;
+use Exception;
+abstract class AbstractMySQLDriver implements Driver {
   protected bool $throwsExceptions=false;
   protected bool $isConnected=false;
-  protected Vector<DriverException> $errors;
-  abstract public function prepare(string $query): StatementInterface;
+  protected Vector<Exception> $errors;
+  abstract public function prepare(string $query): Statement;
   public function isConnected() : bool {
     return $this->isConnected;
   }
   public function hasErrors() : bool {
     return $this->errors->count() ? true : false;
   }
-  public function getErrors() : Vector<DriverException> {
+  public function getErrors() : Vector<Exception> {
     return $this->errors;
   }
   public function throwExceptions(bool $throws) : void {

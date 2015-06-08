@@ -12,4 +12,8 @@ class DPDOConnection extends \PDO {
       throw new DriverException($e->getMessage());
     }
   }
+
+  public function lastInsertId(?string $name=NULL) : int {
+    return intval(parent::lastInsertId($name));
+  }
 }

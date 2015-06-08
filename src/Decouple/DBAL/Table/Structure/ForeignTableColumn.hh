@@ -1,7 +1,8 @@
 <?hh // strict
 namespace Decouple\DBAL\Table\Structure;
 use Decouple\Common\AbstractAttributeContainer;
-class ForeignTableColumn extends TableColumn {
+use Decouple\Common\Contract\DB\ForeignTableColumn as ForeignContract;
+class ForeignTableColumn extends TableColumn implements ForeignContract {
   private string $references = '';
   private string $on = '';
   private string $onDelete = '';
@@ -23,7 +24,8 @@ class ForeignTableColumn extends TableColumn {
   public function getType() : string {
     return $this->type;
   }
-  public function onDelete(string $do) : void {
+  public function onDelete(string $do) : ForeignTableColumn {
     $this->setAttribute('ondelete', $do);
+    return $this;
   }
 }

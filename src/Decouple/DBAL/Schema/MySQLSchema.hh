@@ -2,7 +2,8 @@
 namespace Decouple\DBAL\Schema;
 use Decouple\DBAL\Driver\AbstractMySQLDriver;
 use Decouple\DBAL\Table\MySQLTable;
-class MySQLSchema extends AbstractSchema implements SchemaInterface {
+use Decouple\Common\Contract\DB\Schema;
+class MySQLSchema implements Schema {
   public function __construct(protected string $name, protected AbstractMySQLDriver $driver) {
 
   }

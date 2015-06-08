@@ -1,14 +1,14 @@
 <?hh // strict
 namespace Decouple\DBAL_CLI;
 use Exception;
-use Decouple\DBAL\Schema\SchemaInterface;
+use Decouple\Common\Contract\DB\Schema;
 use Decouple\DBAL\Table\TableInterface;
 use Decouple\DBAL\Table\Structure\TableStructure;
 abstract class AbstractMigration implements MigrationInterface {
   protected string $name = '';
   protected TableStructure $table;
-  public function __construct(protected SchemaInterface $schema) {
-    if(!is_null($this->name)) {
+  public function __construct(protected Schema $schema) {
+    if($this->name == '') {
       throw new Exception("Invalid migration name");
     }
     $this->table = new TableStructure($this->name);

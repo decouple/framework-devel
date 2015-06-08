@@ -1,6 +1,7 @@
 <?hh // strict
 namespace Decouple\DBAL\Connector;
-abstract class AbstractConnector implements ConnectorInterface {
+use Decouple\Common\Contract\DB\Connector;
+abstract class AbstractConnector implements Connector {
   protected bool $throwsExceptions=false;
   protected bool $isConnected=false;
   protected Vector<ConnectorException> $errors;

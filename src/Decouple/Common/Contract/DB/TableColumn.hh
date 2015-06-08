@@ -1,6 +1,6 @@
 <?hh // strict
-namespace Decouple\DBAL\Table\Structure;
-interface TableColumnInterface {
+namespace Decouple\Common\Contract\DB;
+interface TableColumn {
   public function setAttribute(string $name, mixed $value) : void;
   public function getAttribute(string $name) : mixed;
   public function getAttributes() : Map<string,mixed>;

@@ -2,4 +2,5 @@
 return Vector {
   "CreateAuthorsTable",
   "CreateArticlesTable",
+  "AddSomethingToArticlesTable"
 };

@@ -1,10 +1,10 @@
 <?hh // partial
 use Decouple\Ui\Ui;
-use Decouple\DBAL\Driver\DriverInterface;
+use Decouple\Common\Contract\DB\Driver;
 use Decouple\DBAL\Query\Raw;
 class FrontController {
   public function index(
-    DriverInterface $driver,
+    Driver $driver,
     DebugRegistry $debug,
   ): string {
     $view =

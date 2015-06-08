@@ -1,4 +1,9 @@
 <?hh // partial
+require_once "cli/functions.hh";
+// Error handling
+set_exception_handler('cli_exception_handler');
+set_error_handler('cli_error_handler', E_ERROR);
+
 use Decouple\CLI\App;
 use Decouple\CLI\Request\Request;
 use Decouple\Decoupler\Decoupler;

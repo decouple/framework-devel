@@ -2,7 +2,7 @@
 namespace Test\DBAL;
 use Decouple\Test\TestCase;
 use Decouple\DBAL\DPDO\DPDOMySQLDriver;
-use Decouple\DBAL\Schema\SchemaInterface;
+use Decouple\Common\Contract\DB\Schema;
 class SchemaTest extends TestCase {
   public function execute() : void {
     $driver = new DPDOMySQLDriver();
@@ -13,7 +13,7 @@ class SchemaTest extends TestCase {
     }, "decouple", "secret");
     $schema = $driver->schema('decouple');
     $failed = false;
-    if(!$schema instanceof SchemaInterface) {
+    if(!$schema instanceof Schema) {
       $failed = true;
     }
     $this->assertEquals($failed, false);

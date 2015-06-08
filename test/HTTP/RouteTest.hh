@@ -9,7 +9,7 @@ use Decouple\Decoupler\Decoupler;
 class RouteTest extends TestCase {
   public function execute() : void {
     $dependencies = Map {
-      "Test\Http\Fixture\RouteDependency" => new RouteDependency()
+      "Test\HTTP\Fixture\RouteDependency" => new RouteDependency()
     };
 
     $uri = new Uri('foo/bar');

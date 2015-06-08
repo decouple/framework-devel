@@ -1,6 +1,7 @@
 <?hh // strict
 namespace Decouple\DBAL\Table\Structure;
-class TableColumn implements TableColumnInterface {
+use Decouple\Common\Contract\DB\TableColumn as TableColumnContract;
+class TableColumn implements TableColumnContract {
   public function __construct(private string $name, private string $type='string', private Map<string,mixed> $attributes=Map {}) {
 
   }
@@ -22,11 +23,11 @@ class TableColumn implements TableColumnInterface {
   public function getName() : string {
     return $this->name;
   }
-  public function unique(bool $unique=true) : TableColumn {
+  public function unique(bool $unique=true) : TableColumnContract {
     $this->attributes->set('unique', $unique);
     return $this;
   }
-  public function unsigned(bool $unsigned=true) : TableColumn {
+  public function unsigned(bool $unsigned=true) : TableColumnContract {
     $this->attributes->set('unsigned', $unsigned);
     return $this;
   }

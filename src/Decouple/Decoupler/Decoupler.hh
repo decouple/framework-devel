@@ -46,6 +46,10 @@ class Decoupler {
    * Inject an object
    */
   public function injectObject(mixed $object): mixed {
+    if(!is_object($object)) {
+      throw new Exception("Attempting to inject non-object as object");
+      return false;
+    }
     $rfo = new ReflectionObject($object);
     // Reflect on the properties
     $rfp = $rfo->getProperties();
@@ -55,6 +59,9 @@ class Decoupler {
         $type = $property->getTypeText();
         if (substr($type, 0, 1) == '?') {
           $type = substr($type, 1);
+        }
+        if($this->contains($type) && is_object($object)) {
+          assign_object_property($object, $name, $this->get($type));
         }
       }
     }
@@ -76,7 +83,7 @@ class Decoupler {
     if (!is_null($rfm)) {
       $params = $this->methodParams($rfm);
     } else {
-      $params = [];
+      $params = Vector {};
     }
     $obj = $rfo->newInstanceArgs($params);
     return $this->injectObject($obj);
@@ -104,16 +111,17 @@ class Decoupler {
     $rp = $rf->getParameters();
     $params = Vector {};
     foreach ($rp as $param) {
-      if (is_array($param)) {
-        if (!$this->contains($param['info']['type'])) {
+      if ($param instanceof ReflectionParameter) {
+        $type = $param->getTypeText();
+        if (!$this->contains($type)) {
           throw new Exception(
             sprintf(
               "Unregistered dependency: %s [Decoupler]",
-              $param['info']['type'],
+              $type,
             ),
           );
         } else {
-          $params->add($this->get($param['info']['type']));
+          $params->add($this->get($type));
         }
       }
     }
@@ -130,23 +138,24 @@ class Decoupler {
     $params = Vector {};
     if ($rp) {
       foreach ($rp as $param) {
-        if (is_array($param)) {
-          $domains = explode('\\', $param['info']['type']);
-          if (!$this->contains($param['info']['type'])) {
-            if ($param['info']['type'] == 'Decouple\Decoupler\Decoupler') {
+        if ($param instanceof ReflectionParameter) {
+          $type = $param->getTypeText();
+          $domains = explode('\\', $type);
+          if (!$this->contains($type)) {
+            if ($type == 'Decouple\Decoupler\Decoupler') {
               $params->add($this);
             } else {
               if (!$domains || $domains[0] != 'HH') {
                 throw new Exception(
                   sprintf(
                     "Unregistered dependency: %s [Decoupler]",
-                    $param['info']['type'],
+                    $type,
                   ),
                 );
               }
             }
           } else {
-            $params->add($this->get($param['info']['type']));
+            $params->add($this->get($type));
           }
         }
       }

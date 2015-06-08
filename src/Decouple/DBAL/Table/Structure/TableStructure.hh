@@ -5,4 +5,7 @@ class TableStructure extends AbstractTableStructure {
     $this->columns = Map {};
     parent::__construct($name);
   }
+  public function execute() : bool {
+    return false;
+  }
 }

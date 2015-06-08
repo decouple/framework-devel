@@ -1,18 +1,26 @@
 <?hh // strict
 namespace Decouple\DBAL_CLI\Command;
-use Decouple\DBAL_CLI\MigrationInterface;
+use Decouple\DBAL_CLI\AbstractMigration;
+use Decouple\CLI\Console;
 class MigrateDownCommand extends AbstractMigrateCommand {
   public static string $name = 'migrate:down';
   public function execute(): void {
-    $migrations = $this->getMigrations();
+    Console::output("Refreshing migrations");
+    $this->schema->execute('SET FOREIGN_KEY_CHECKS=0;');
+    $migrations = $this->loadMigrations();
     if ($migrations instanceof Traversable) {
       foreach ($migrations as $migration) {
-        $this->getMigration($migration);
+        $this->loadMigration($migration);
         $obj = $this->decoupler->injectInstance($migration);
-        if ($migration instanceof MigrationInterface) {
-          $migration->down($this->driver->schema('decouple'));
+        if ($obj instanceof AbstractMigration) {
+          Console::output(
+            sprintf("Reverse migration %s...", $migration),
+          );
+          $obj->down();
+          $this->resetMigration($migration);
         }
       }
     }
+    $this->schema->execute('SET FOREIGN_KEY_CHECKS=1;');
   }
 }

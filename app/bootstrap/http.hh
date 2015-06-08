@@ -1,4 +1,9 @@
 <?hh // partial
+require_once "http/functions.hh";
+// Error handling
+set_exception_handler('http_exception_handler');
+set_error_handler('http_error_handler', E_ERROR);
+
 require "common.hh";
 require_once dirname(__FILE__).'/xhp/init.hh';
 

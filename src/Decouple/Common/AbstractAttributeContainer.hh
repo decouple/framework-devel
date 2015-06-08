@@ -1,7 +1,10 @@
 <?hh // strict
 namespace Decouple\Common;
 class AbstractAttributeContainer implements \Decouple\Common\Contract\AttributeContainer {
-  public function __construct(private Map<string,mixed> $attributes) {}
+  protected Map<string,mixed> $attributes;
+  public function __construct() {
+    $this->attributes = Map {};
+  }
   public function setAttribute(string $name, mixed $value) : void  {
     $this->attributes->set($name, $value);
   }

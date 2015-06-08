@@ -1,7 +1,7 @@
 <?hh // strict
 namespace Test\DBAL;
 use Decouple\Test\TestCase;
-use Decouple\DBAL\Query\QueryInterface;
+use Decouple\Common\Contract\DB\Query;
 use Decouple\DBAL\DPDO\DPDOMySQLDriver;
 class QueryTest extends TestCase {
   public function execute() : void {
@@ -15,7 +15,7 @@ class QueryTest extends TestCase {
     $table = $schema->table('articles');
     $query = $table->select();
     $failed = false;
-    if(!$query instanceof QueryInterface) {
+    if(!$query instanceof Query) {
       $failed = true;
     }
     $this->assertEquals($failed, false);
