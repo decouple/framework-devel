@@ -1,5 +1,6 @@
 <?hh // partial
 return Vector {
   "CreateAuthorsTable",
-  "CreateArticlesTable"
+  "CreateArticlesTable",
+  "CreateNavigationTable"
 };

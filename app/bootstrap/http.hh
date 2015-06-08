@@ -4,8 +4,10 @@ require_once "http/functions.hh";
 set_exception_handler('http_exception_handler');
 set_error_handler('http_error_handler', E_ERROR);
 
+require_once '../vendor/facebook/xhp-lib/init.php';
+
 require "common.hh";
-require_once dirname(__FILE__).'/xhp/init.hh';
+// require_once dirname(__FILE__).'/xhp/init.hh';
 
 set_include_path(
   get_include_path().

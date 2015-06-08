@@ -1,3 +1,6 @@
 [submodule "xhp"]
 	path = vendor/facebook/xhp
 	url = https://github.com/facebook/xhp.git
+[submodule "vendor/facebook/xhp-lib"]
+	path = vendor/facebook/xhp-lib
+	url = git@github.com:facebook/xhp-lib.git

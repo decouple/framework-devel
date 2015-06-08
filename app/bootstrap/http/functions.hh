@@ -25,7 +25,7 @@ function http_exception_handler(Exception $e) : void {
   foreach($trace as $p) {
     try {
       $file = !is_null($p['file']) ? $p['file'] : 'N/A';
-      $args = !is_null($p['args']) ? implode(',', (string)$p['args']) : 'N/A';
+      $args = !is_null($p['args']) ? json_encode($p['args']) : 'N/A';
       $func = !is_null($p['class']) ? sprintf('%s->%s', $p['class'], $p['function']) : (!is_null($p['function']) ? $p['function'] : 'N/A');
       $line = !is_null($p['line']) ? $p['line'] : 'N/A';
       $error =

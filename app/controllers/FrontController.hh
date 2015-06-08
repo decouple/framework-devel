@@ -1,14 +1,16 @@
 <?hh // partial
 use Decouple\Ui\Ui;
 use Decouple\Common\Contract\DB\Driver;
+use Decouple\Common\Contract\DB\Schema;
 use Decouple\DBAL\Query\Raw;
 class FrontController {
   public function index(
     Driver $driver,
+    Schema $schema,
     DebugRegistry $debug,
   ): string {
     $view =
-      <front:index>
+      <front:index schema={$schema}>
       </front:index>;
     $db = $driver->schema('decouple');
 

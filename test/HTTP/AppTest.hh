@@ -14,7 +14,7 @@ class AppTest extends TestCase {
     // Placeholder for injection
   }
   public function execute() : void {
-    $path = (string)$this->paths->get('bootstrap') . '/xhp/init.hh';
+    $path = (string)$this->paths->get('vendor') . '/facebook/xhp-lib/init.php';
     // Require XHP init
     hack_require($path);
     $this->testAppBootstrapA();

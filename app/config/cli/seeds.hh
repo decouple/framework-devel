@@ -1,5 +1,6 @@
 <?hh // partial
 return Vector {
   "AuthorsTableSeeder",
-  "ArticlesTableSeeder"
+  "ArticlesTableSeeder",
+  "NavigationTableSeeder"
 };

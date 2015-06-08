@@ -1,4 +1,4 @@
-<?hh // partial 
+<?hh // partial
 $base_path = realpath(dirname(dirname(dirname(__FILE__))));
 return Map {
   "root" => $base_path,
@@ -11,5 +11,6 @@ return Map {
   "public" => $base_path . '/public',
   "test" => $base_path . '/test',
   "config" => $base_path . '/app/config',
-  "migrations" => $base_path . '/app/database/migrations'
+  "migrations" => $base_path . '/app/database/migrations',
+  "vendor" => $base_path . '/vendor'
 };
