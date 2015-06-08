@@ -14,6 +14,8 @@ set_include_path(
   PATH_SEPARATOR.
   $paths->get('controllers').
   PATH_SEPARATOR.
+  $paths->get('database/models').
+  PATH_SEPARATOR.
   $paths->get('views'),
 );
 

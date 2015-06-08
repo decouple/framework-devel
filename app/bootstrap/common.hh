@@ -41,7 +41,7 @@ $schema = $driver->schema('decouple');
 $decoupler = new Decoupler(
   Map {
     "Decouple\Registry\Paths" => $paths,
-    "DebugRegistry" => new DebugRegistry(Map {"start_time" => time()}),
+    "DebugRegistry" => new DebugRegistry(Map {"start_time" => getrusage()}),
     "Decouple\Common\Contract\DB\Driver" => $driver,
     "Decouple\Common\Contract\DB\Schema" => $schema,
   },

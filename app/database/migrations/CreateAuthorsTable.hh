@@ -1,4 +1,4 @@
-<?hh // partial
+<?hh // strict
 use Decouple\DBAL_CLI\Migration;
 // Run the create articles table migration
 class CreateAuthorsTable extends Migration {

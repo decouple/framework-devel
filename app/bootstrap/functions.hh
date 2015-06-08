@@ -26,7 +26,7 @@ function perf_info(DebugRegistry $debug): :xhp {
     </div>;
 }
 
-function rutime(KeyedContainer<string,float> $ru, KeyedContainer<string,float> $rus, string $index) : float {
+function rutime(KeyedContainer<string,float> $ru, KeyedContainer<string,float> $rus, string $index) : int {
   return
     ($ru["ru_$index.tv_sec"] * 1000 +
      intval($ru["ru_$index.tv_usec"] / 1000)) -
