@@ -1,6 +1,6 @@
 <?hh // strict
 namespace Decouple\DBAL_CLI\Command;
-use Decouple\DBAL_CLI\MigrationInterface;
+use Decouple\DBAL_CLI\Migration;
 use Decouple\CLI\Console;
 class MigrateRefreshCommand extends AbstractMigrateCommand {
   public static string $name = 'migrate:refresh';
@@ -14,7 +14,7 @@ class MigrateRefreshCommand extends AbstractMigrateCommand {
         Console::output(sprintf("Migration: %s", $migration));
         $this->loadMigration($migration);
         $obj = $this->decoupler->injectInstance($migration);
-        if ($obj instanceof MigrationInterface) {
+        if ($obj instanceof Migration) {
           // Check for the most recent stored migration
           $tableName = $obj->getName();
           $storedMigration = $this->selectMigration($migration);

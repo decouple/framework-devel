@@ -1,6 +1,6 @@
 <?hh // strict
 namespace Decouple\DBAL_CLI\Command;
-use Decouple\DBAL_CLI\AbstractMigration;
+use Decouple\DBAL_CLI\Migration;
 use Decouple\CLI\Console;
 use Exception;
 class MigrateUpCommand extends AbstractMigrateCommand {
@@ -13,7 +13,7 @@ class MigrateUpCommand extends AbstractMigrateCommand {
       foreach ($migrations as $migration) {
         $this->loadMigration($migration);
         $obj = $this->decoupler->injectInstance($migration);
-        if ($obj instanceof AbstractMigration) {
+        if ($obj instanceof Migration) {
           // Check for the most recent stored migration
           $tableName = $obj->getName();
           $storedMigration = $this->selectMigration($migration);

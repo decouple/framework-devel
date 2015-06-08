@@ -1,7 +1,7 @@
 <?hh // partial
-use Decouple\DBAL_CLI\AbstractMigration;
+use Decouple\DBAL_CLI\Migration;
 // Run the create articles table migration
-class CreateArticlesTable extends AbstractMigration {
+class CreateArticlesTable extends Migration {
   protected string $name = 'articles';
   public function up() : void
   {

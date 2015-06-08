@@ -1,5 +1,5 @@
 <?hh // strict
-namespace Decouple\Contract;
+namespace Decouple\Common\Contract;
 interface Runnable {
   public function run() : void;
 }

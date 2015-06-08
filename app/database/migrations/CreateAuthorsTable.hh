@@ -1,15 +1,13 @@
 <?hh // partial
-use Decouple\DBAL_CLI\AbstractMigration;
+use Decouple\DBAL_CLI\Migration;
 // Run the create articles table migration
-class CreateAuthorsTable extends AbstractMigration {
+class CreateAuthorsTable extends Migration {
   protected string $name = 'authors';
   public function up() : void
   {
-    $this->table->string('name', 55)->unique();
     $this->table->increments('id');
+    $this->table->string('name', 55)->unique();
     $this->table->string('email', 255)->unique();
-    // $table->integer('author_id')->unsigned();
-    // $table->foreign('author_id')->references('id')->on('authors')->onDelete('cascade');
     $this->table->timestamps();
     $this->table->softDeletes();
   }
