@@ -4,10 +4,13 @@ use Decouple\Common\Contract\DB\Schema;
 use Decouple\Common\Contract\DB\Table;
 use Decouple\Common\Contract\DB\TableStructure;
 use Decouple\Common\Contract\DB\Query;
+use Decouple\Common\Contract\DB\Queryable;
 use Decouple\Common\Contract\DB\ExecutableTableStructure;
 use Decouple\DBAL\Table\Alter\MySQLTableAlter;
 use Decouple\DBAL\Table\Create\MySQLTableCreate;
 use Decouple\DBAL\Query\MySQLQuery;
+use Decouple\DBAL\Query\AbstractMySQLQuery;
+use Decouple\DBAL\Query\AwaitableMySQLQuery;
 class MySQLTable implements Table {
   public function __construct(
     protected string $name,
@@ -61,7 +64,6 @@ class MySQLTable implements Table {
   }
   public function select(?Vector<string> $fields = null): MySQLQuery {
     return (new MySQLQuery($this))->select($fields);
-    return (new MySQLQuery($this))->select($fields);
   }
   public function selectColumn(string $field): MySQLQuery {
     return (new MySQLQuery($this))->selectColumn($field);
@@ -98,5 +100,8 @@ class MySQLTable implements Table {
     KeyedTraversable<string, string> $array,
   ): MySQLQuery {
     return $this->select()->whereAll($array);
+  }
+  public function awaitable() : AwaitableMySQLQuery {
+    return new AwaitableMySQLQuery($this);
   }
 }

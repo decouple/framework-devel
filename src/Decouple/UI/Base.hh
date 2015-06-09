@@ -1,7 +1,7 @@
 <?hh // strict
 abstract class :decouple:ui:base extends :x:element {
 
-  abstract protected function compose(): :xhp;
+  abstract protected function compose(): XHPRoot;
 
   final public function addClass(string $class): :decouple:ui:base {
     $this->setAttribute(

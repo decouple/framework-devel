@@ -1,17 +1,17 @@
-<?hh // partial 
+<?hh // partial
 namespace Decouple\Test;
 use Decouple\CLI\Command\CommandInterface;
-use Decouple\CLI\Command\AbstractCommand;
+use Decouple\CLI\Command\AwaitableCommand;
 use Decouple\CLI\Console;
 use Decouple\CLI\App;
 use Decouple\Registry\Paths;
-class TestCommand extends AbstractCommand {
+class TestCommand extends AwaitableCommand {
   public function __construct(private Paths $paths, private App $app) {
   }
-  static function getName() : string { 
-    return 'test'; 
+  static function getName() : string {
+    return 'test';
   }
-  public function execute() : void {
+  public async function execute() : Awaitable<void> {
     $config = $this->app->getConfig('cli/tests');
     if(!$config) {
       throw new \Exception("Invalid tests config");
@@ -26,11 +26,11 @@ class TestCommand extends AbstractCommand {
       $class = (string)$test;
       Console::output(sprintf('- Running %s', $class));
       $obj = $this->app->decoupler()->injectInstance($class);
-      if(!$obj) { 
+      if(!$obj) {
         throw new Exception(sprintf("Unable to instantiate %s", $class));
       }
       try {
-        $res = $this->app->decoupler()->injectMethod($obj, 'execute');
+        $res = await $this->app->decoupler()->awaitInjectMethod($obj, 'execute');
         Console::output('[PASSED]');
         $passed++;
         try {

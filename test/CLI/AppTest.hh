@@ -19,18 +19,21 @@ class AppTest extends \Decouple\Test\TestCase {
     $app = $this->__bootstrap("decouple:version");
     $result = $this->capture($app);
     $this->assertEquals($result, "Decouple v0.1a\n");
+    Console::output('Passed');
   }
 
   public function testBootstrapB() : void {
     $app = $this->__bootstrap("foo:bar");
     $result = $this->capture($app);
     $this->assertEquals($result, "FooBar!\n");
+    Console::output('Passed');
   }
 
   public function testBootstrapC() : void {
     $app = $this->__bootstrap("bar:baz --bar=wtf!");
     $result = $this->capture($app);
     $this->assertEquals($result, "bar:wtf!\n");
+    Console::output('Passed');
   }
 
   public function __bootstrap(string $args) : App {
@@ -47,7 +50,7 @@ class AppTest extends \Decouple\Test\TestCase {
     return $app;
   }
 
-  public function capture(App $app) {
+  public function capture(App $app) : string {
     ob_start();
     try {
       $app->execute();

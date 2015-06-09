@@ -8,7 +8,7 @@ class :layouts:master extends :decouple:ui:base {
   protected Map<string,(string,string,bool)> $scripts = Map {};
   protected Map<string,(string,string,bool)> $styles = Map {};
 
-  public function compose() : :xhp {
+  public function compose() : XHPRoot {
     $head =
       <head>
           <title>{$this->getTitle()}</title>

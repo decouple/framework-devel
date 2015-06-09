@@ -2,9 +2,9 @@
 namespace Decouple\DBAL\Query;
 use Decouple\DBAL\Table\MySQLTable;
 use Decouple\Common\Contract\DB\Statement;
-use Decouple\Common\Contract\DB\Query;
+use Decouple\Common\Contract\DB\AwaitableQuery;
 use Exception;
-class MySQLQuery extends AbstractMySQLQuery implements Query {
+class AwaitableMySQLQuery extends AbstractMySQLQuery implements AwaitableQuery {
   protected string $action;
   protected Map<string, mixed> $data;
   protected Vector<string> $selectFields;
@@ -23,13 +23,13 @@ class MySQLQuery extends AbstractMySQLQuery implements Query {
     $this->query_raw = '';
   }
 
-  public function limit(int $min=0, int $max=25) : MySQLQuery {
+  public function limit(int $min=0, int $max=25) : AwaitableMySQLQuery {
     $this->limitMin = $min;
     $this->limitMax = $max;
     return $this;
   }
 
-  public function select(?Vector<string> $fields = null): MySQLQuery {
+  public function select(?Vector<string> $fields = null): AwaitableMySQLQuery {
     $this->action = 'select';
     if (is_null($fields)) {
       $fields = Vector {"*"};
@@ -40,20 +40,20 @@ class MySQLQuery extends AbstractMySQLQuery implements Query {
     return $this;
   }
 
-  public function selectColumn(string $field): MySQLQuery {
+  public function selectColumn(string $field): AwaitableMySQLQuery {
     $this->action = 'select';
     $this->selectFields->add($field);
     return $this;
   }
 
-  public function update(Map<string, mixed> $data): MySQLQuery {
+  public function update(Map<string, mixed> $data): AwaitableMySQLQuery {
     $this->action = 'update';
     $data['modified'] = time();
     $this->data->setAll($data);
     return $this;
   }
 
-  public function delete(bool $soft = false): MySQLQuery {
+  public function delete(bool $soft = false): AwaitableMySQLQuery {
     if (!$soft) {
       $this->action = 'delete';
       return $this;
@@ -69,14 +69,14 @@ class MySQLQuery extends AbstractMySQLQuery implements Query {
     string $field,
     string $comp,
     mixed $value,
-  ): MySQLQuery {
+  ): AwaitableMySQLQuery {
     $this->whereData->add(Vector {$field, $comp, $value});
     return $this;
   }
 
   public function whereAll(
     KeyedTraversable<string, string> $array,
-  ): MySQLQuery {
+  ): AwaitableMySQLQuery {
     foreach ($array as $key => $where) {
       if (count($where) == 3) {
         $this->where($where[0], $where[1], $where[2]);
@@ -92,21 +92,22 @@ class MySQLQuery extends AbstractMySQLQuery implements Query {
   public function orderBy(
     string $field,
     string $direction = 'DESC',
-  ): MySQLQuery {
+  ): AwaitableMySQLQuery {
     $this->orderData->set($field, $direction);
     return $this;
   }
 
-  public function insert(Map<string, mixed> $data): int {
+  public async function insert(Map<string, mixed> $data): Awaitable<int> {
     $this->action = 'insert';
     $this->data->setAll($data);
-    $this->execute();
+    await $statement = $this->execute();
     $id = $this->table->schema()->driver()->connector()->lastInsertId();
     return $id;
   }
 
-  public function fetchAll(): Vector<Map<string, mixed>> {
-    $fetched = $this->execute()->fetchAll();
+  public async function fetchAll(): Awaitable<Vector<Map<string, mixed>>> {
+    $statement = await $this->execute();
+    $fetched = $statement->fetchAll();
     $result = Vector {};
     foreach ($fetched as $row) {
       $result[] = $row;
@@ -114,21 +115,23 @@ class MySQLQuery extends AbstractMySQLQuery implements Query {
     return $result;
   }
 
-  public function first(): ?Map<string, mixed> {
+  public async function first(): Awaitable<?Map<string, mixed>> {
     $this->limitMin = 0;
     $this->limitMax = 1;
-    $fetched = $this->execute()->fetchAll();
-    if(!count($fetched)) {
+    $fetched = await $this->fetchAll();
+    if (!count($fetched)) {
       return null;
     }
     return new Map($fetched[0]);
   }
 
-  public function fetchColumn(int $column = 0): mixed {
-    return $this->execute()->fetchColumn($column);
+  public async function fetchColumn(int $column = 0): Awaitable<mixed> {
+    $statement = await $this->execute();
+    $res = $statement->fetchColumn($column);
+    return $res;
   }
 
-  public function execute(): Statement {
+  public async function execute(): Awaitable<Statement> {
     $build = $this->build();
     $statement = $this->table->schema()->driver()->prepare($build->query);
     $values = Map {};

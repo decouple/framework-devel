@@ -3,6 +3,8 @@ namespace Decouple\CLI;
 use Decouple\CLI\Request\Request;
 use Decouple\Decoupler\Decoupler;
 use Decouple\CLI\Command\AbstractCommand;
+use Decouple\CLI\Command\AwaitableCommand;
+use Decouple\CLI\Command\CommandInterface;
 use Decouple\Registry\Registry;
 use Decouple\Registry\Paths;
 class App {
@@ -18,7 +20,9 @@ class App {
   public function execute() : mixed {
     $command = $this->request->getArg(0)->getVariable();
     $command = $this->getCommand($command);
-    if($command instanceof AbstractCommand) {
+    if($command instanceof AwaitableCommand) {
+      return $command->execute()->getWaitHandle()->join();
+    } else if($command instanceof CommandInterface) {
       return $command->execute();
     }
     throw new \Exception(sprintf("Unable to inject command instance: %s", (string)$command));
@@ -47,10 +51,10 @@ class App {
     }
   }
   public function registerCommand(mixed $command) : void {
-    if(!$command instanceof AbstractCommand && !class_exists($command)) {
+    if(!$command instanceof CommandInterface && !class_exists($command)) {
       throw new Command\CommandNotFoundException((string)$command);
     }
-    if(!is_subclass_of($command, 'Decouple\CLI\Command\AbstractCommand')) {
+    if(!is_subclass_of($command, 'Decouple\CLI\Command\CommandInterface')) {
       throw new Command\CommandNotFoundException((string)$command);
     }
     $this->commands->set(call_user_func_array([$command,'getName'], []), $command);

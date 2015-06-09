@@ -12,5 +12,6 @@ return Vector {
   "Test\\DBAL\\SchemaTest",
   "Test\\DBAL\\TableTest",
   "Test\\DBAL\\QueryTest",
+  "Test\\DBAL\\AwaitableTest",
   "Test\UI\\ButtonTest",
 };

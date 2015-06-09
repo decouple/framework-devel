@@ -98,6 +98,15 @@ class Decoupler {
     return $rm->invokeArgs($object, $params->toArray());
   }
   /**
+   * Inject a method asynchronously
+   */
+  public async function awaitInjectMethod(mixed $object, string $method): Awaitable<mixed> {
+    // Create reflection object method
+    $rm = new ReflectionMethod($object, $method);
+    $params = $this->methodParams($rm);
+    return await $rm->invokeArgs($object, $params->toArray());
+  }
+  /**
    * Inject a function
    */
   public function injectFunction(mixed $function): mixed {

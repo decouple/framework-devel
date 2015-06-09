@@ -9,4 +9,5 @@ interface Table extends DataStore {
   public function drop() : bool;
   public function getName() : string;
   public function schema() : Schema;
+  public function awaitable() : AwaitableQuery;
 }
